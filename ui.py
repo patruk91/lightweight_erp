@@ -2,6 +2,11 @@
 
 
 def width_columns(table):
+    """
+    Find the longest width in table.
+    :param table: Text file where are included information.
+    :return: List with width of columns.
+    """
     columns_width = []
     amount_of_columns = len(table[0])
 
@@ -15,11 +20,16 @@ def width_columns(table):
     return columns_width
 
 
-def sum_values(data_list):
-    value = 0
-    for i in data_list:
-        value += i
-    return value
+def sum_values(numbers_list):
+    """
+    Sum values from list.
+    :param numbers_list: List with integers.
+    :return: sum(data_list)
+    """
+    sum_numbers = 0
+    for number in numbers_list:
+        sum_numbers += number
+    return sum_numbers
 
 
 def print_table(table, title_list):
