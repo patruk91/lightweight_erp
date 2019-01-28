@@ -113,25 +113,15 @@ def print_menu(title, list_options, exit_message):
 def get_inputs(list_labels, title):
     """
     Gets list of inputs from the user.
-    Sample call:
-        get_inputs(["Name","Surname","Age"],"Please provide your personal information")
-    Sample display:
-        Please provide your personal information
-        Name <user_input_1>
-        Surname <user_input_2>
-        Age <user_input_3>
-
-    Args:
-        list_labels (list): labels of inputs
-        title (string): title of the "input section"
-
-    Returns:
-        list: List of data given by the user. Sample return:
-            [<user_input_1>, <user_input_2>, <user_input_3>]
+    :param list_labels: labels of inputs
+    :param title: title of the "input section"
+    :return: list of data given by the user
     """
+    print("{}:" .format(title))
     inputs = []
-
-    # your code
+    for label in list_labels:
+        answers = input("{}: " .format(label))
+        inputs.append(answers)
 
     return inputs
 
