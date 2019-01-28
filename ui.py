@@ -1,23 +1,22 @@
 """ User Interface (UI) module """
 
 
-def width_columns(table):
+def get_width_columns(table, title_list):
     """
     Find the longest width in table.
     :param table: table to display - text file where are included some information.
     :return: List with width of columns.
     """
-    columns_width = []
-    amount_of_columns = len(table[0])
+    number_of_columns = len(table[0])
+    file_columns_width = [max([len(data[index]) for data in table])
+                          for index in range(number_of_columns)]
 
-    for index in range(amount_of_columns):
-        column_width = 0
-        for data in table:
-            if column_width < len(data[index]):
-                column_width = len(data[index])
-        columns_width.append(column_width)
+    titles_width = (list(len(title) for title in title_list))
+    width_columns = [file_columns_width[index] if file_columns_width[index] >
+                     titles_width[index] else titles_width[index]
+                     for index in range(number_of_columns)]
 
-    return columns_width
+    return width_columns
 
 
 def sum_values(numbers_list):
@@ -32,30 +31,50 @@ def sum_values(numbers_list):
     return sum_numbers
 
 
+def get_position_value_dictionary(table, title_list):
+    """
+    Create a dictionary with position and column width. Is need to **kwargs
+    in print table function.
+    :return: Dictionary with position:column width
+    """
+    width_columns = get_width_columns(table, title_list)
+    number_of_columns = len(width_columns)
+    string_positions = ["pos" + str(index) for index in range(number_of_columns)]
+    position_value = dict(zip(string_positions, width_columns))
+
+    return position_value
+
+
+def get_total_sum_of_width_columns(table, title_list):
+    """
+    Calcualte total sum of width in each column.
+    :param table: table: table to display - text file where are included some information.
+    :param title_list: title_list: list containing table headers
+    :return: Sum of width
+    """
+    width_columns = get_width_columns(table, title_list)
+    total_column_lenght = sum_values(width_columns) + 1  # due to end in var:string "|"
+    number_of_columns = len(width_columns)
+    PADDINGS = 3
+
+    total_width_sum = total_column_lenght + (number_of_columns * PADDINGS)
+    return total_width_sum
+
+
 def print_table(table, title_list):
     """
     Prints table with data.
     :param table: table to display - text file where are included some information.
     :param title_list: list containing table headers
     """
-    columns_width = width_columns(table)
-    amount_of_columns = len(columns_width)
-    titles_width = (list(len(i) for i in title_list))
-    total_width = [columns_width[i] if columns_width[i] > titles_width[i]
-                   else titles_width[i] for i in range(amount_of_columns)]
+    dict_pos_value = get_position_value_dictionary()
+    total_width_sum = get_total_sum_of_width_columns(table, title_list)
+    string = ''.join(['| {:^{' + pos + '}} ' for pos in dict_pos_value.keys()]) + "|"
 
-    columns_keys = ["pos" + str(index) for index in range(amount_of_columns)]
-    columns_dict = dict(zip(columns_keys, total_width))
-    string = ''.join(
-        ['| {:^{' + columns_keys[index] + '}} ' for index in range(amount_of_columns)]) + "|"
-    sum_of_column_width = sum_values(
-        total_width) + 1  # due to end in string "|"
-    PADDINGS = 3
-
-    print("-" * (sum_of_column_width + (amount_of_columns * PADDINGS)))
+    print("-" * total_width_sum)
     for record in table:
-        print(string.format(*record, **columns_dict))
-        print("-" * (sum_of_column_width + (amount_of_columns * PADDINGS)))
+        print(string.format(*record, **dict_pos_value))
+        print("-" * total_width_sum)
 
 
 def print_result(result, label):
