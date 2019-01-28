@@ -1,6 +1,27 @@
 """ User Interface (UI) module """
 
 
+def width_columns(table):
+    columns_width = []
+    amount_of_columns = len(table[0])
+
+    for index in range(amount_of_columns):
+        column_width = 0
+        for data in table:
+            if column_width < len(data[index]):
+                column_width = len(data[index])
+        columns_width.append(column_width)
+
+    return columns_width
+
+
+def sum_values(data_list):
+    value = 0
+    for i in data_list:
+        value += i
+    return value
+
+
 def print_table(table, title_list):
     """
     Prints table with data.
@@ -22,7 +43,7 @@ def print_table(table, title_list):
         None: This function doesn't return anything it only prints to console.
     """
 
-    # your goes code
+
 
 
 def print_result(result, label):
