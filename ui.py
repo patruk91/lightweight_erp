@@ -67,9 +67,12 @@ def print_table(table, title_list):
     :param table: table to display - text file where are included some information.
     :param title_list: list containing table headers
     """
-    dict_pos_value = get_position_value_dictionary()
+    dict_pos_value = get_position_value_dictionary(table, title_list)
     total_width_sum = get_total_sum_of_width_columns(table, title_list)
     string = ''.join(['| {:^{' + pos + '}} ' for pos in dict_pos_value.keys()]) + "|"
+
+    print("-" * total_width_sum)
+    print(string.format(*title_list, **dict_pos_value))
 
     print("-" * total_width_sum)
     for record in table:
