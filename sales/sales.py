@@ -39,7 +39,9 @@ def start_module():
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
     elif option == "4":
-        accounting.start_module()
+        ui.print_table(table, title_list)
+        id_ = input("Enter id of record who you want edit: ")
+        update(table, id_)
     elif option == "5":
         sales.start_module()
     elif option == "6":
@@ -127,8 +129,34 @@ def update(table, id_):
     Returns:
         list: table with updated record
     """
+    updated_record = []
+    for record in table:
+        if id_ in record:
+            updated_record.append(record)
+    ui.print_table(updated_record, title_list)
+    user_input = input("What do you want change ?").lower()
+    if user_input == "title":
+        new_title = input("Actual title: " + updated_record[0][1] + "\nEnter new: ")
+        updated_record[0][1] = new_title
+    elif user_input == "price":
+        new_price = int(input("Actual price: " + updated_record[0][2] + "\nEnter new: "))
+        updated_record[0][2] = new_price
+    elif user_input == "month":
+        new_month = int(input("Actual month: " + updated_record[0][3] + "\nEnter new: "))
+        updated_record[0][3] = new_month
+    elif user_input == "day":
+        new_day = int(input("Actual day: " + updated_record[0][4] + "\nEnter new: "))
+        updated_record[0][4] = new_day
+    elif user_input == "year":
+        new_year = int(input("Actual year: " + updated_record[0][5] + "\nEnter new: "))
+        updated_record[0][5] = new_year
+    else:
+        print("Something went wrong!")
+    print(updated_record)
 
-    # your code
+
+
+
 
     return table
 
