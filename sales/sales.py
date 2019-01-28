@@ -16,9 +16,10 @@ import ui
 # data manager module
 import data_manager
 # common module
-import common
+#import common
 
-
+table = data_manager.get_table_from_file(file_name="sales.csv")
+title_list = ["Id", "Title", "Price", "Month", "Day", "Year"]
 def start_module():
     """
     Starts this module and displays its menu.
@@ -28,8 +29,26 @@ def start_module():
     Returns:
         None
     """
+    inputs = input(["Please enter a number: "])
+    option = inputs[0]
+    if option == "1":
+        show_table(table)
+    elif option == "2":
+        add(table)
+    elif option == "3":
+        id_ = input("Enter id of record to delete: ")
+        remove(table, id_)
+    elif option == "4":
+        accounting.start_module()
+    elif option == "5":
+        sales.start_module()
+    elif option == "6":
+        crm.start_module()
+    elif option == "0":
+        sys.exit(0)
+    else:
+        raise KeyError("There is no such option.")
 
-    # your code
 
 
 def show_table(table):
@@ -42,8 +61,7 @@ def show_table(table):
     Returns:
         None
     """
-
-    # your code
+    ui.print_table(table, title_list)
 
 
 def add(table):
@@ -56,9 +74,25 @@ def add(table):
     Returns:
         list: Table with a new record
     """
+    new_record = []
+    sales_records = ["Enter title: ", "Enter price: ", "Enter month: ", "Enter day: ", "Enter year: "]
+    id = "DSFsdfsdfj"
+    new_record.append(id)
+    i = 1
+    title = input(sales_records[0])
+    new_record.append(title)
+    while i < len(sales_records):
+        integer_inputs = input(sales_records[i])
+        if integer_inputs.isdigit():
+            new_record.append(integer_inputs)
+            i += 1
 
-    # your code
-
+        else:
+            print("error!")
+    print(new_record)
+    updated_table = table + [new_record]
+    data_manager.write_table_to_file(file_name="sales.csv", table=updated_table)
+    ui.print_table(updated_table, title_list)
     return table
 
 
@@ -73,9 +107,12 @@ def remove(table, id_):
     Returns:
         list: Table without specified record.
     """
-
-    # your code
-
+    new_list = []
+    for records in table:
+        if id_ not in records:
+            new_list.append(records)
+        data_manager.write_table_to_file(file_name="sales.csv", table=new_list)
+    show_table(new_list)
     return table
 
 
@@ -132,3 +169,4 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     """
 
     # your code
+start_module()
