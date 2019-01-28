@@ -97,26 +97,17 @@ def print_result(result, label):
 
 def print_menu(title, list_options, exit_message):
     """
-    Displays a menu. Sample output:
-        Main menu:
-            (1) Store manager
-            (2) Human resources manager
-            (3) Inventory manager
-            (4) Accounting manager
-            (5) Sales manager
-            (6) Customer relationship management (CRM)
-            (0) Exit program
-
-    Args:
-        title (str): menu title
-        list_options (list): list of strings - options that will be shown in menu
-        exit_message (str): the last option with (0) (example: "Back to main menu")
-
-    Returns:
-        None: This function doesn't return anything it only prints to console.
+    Displays a menu.
+    :param title: menu title
+    :param list_options: list of strings - options that will be shown in menu
+    :param exit_message: option for back to main menu
     """
-
-    # your code
+    print("{}:" .format(title))
+    i = 1
+    for option in list_options:
+        print("({}) {}" .format(i, option))
+        i += 1
+    print("(0) {}" .format(exit_message))
 
 
 def get_inputs(list_labels, title):
