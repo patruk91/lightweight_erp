@@ -4,7 +4,7 @@
 def width_columns(table):
     """
     Find the longest width in table.
-    :param table: Text file where are included information.
+    :param table: table to display - text file where are included some information.
     :return: List with width of columns.
     """
     columns_width = []
@@ -35,25 +35,27 @@ def sum_values(numbers_list):
 def print_table(table, title_list):
     """
     Prints table with data.
-
-    Example:
-        /-----------------------------------\
-        |   id   |      title     |  type   |
-        |--------|----------------|---------|
-        |   0    | Counter strike |    fps  |
-        |--------|----------------|---------|
-        |   1    |       fo       |    fps  |
-        \-----------------------------------/
-
-    Args:
-        table (list): list of lists - table to display
-        title_list (list): list containing table headers
-
-    Returns:
-        None: This function doesn't return anything it only prints to console.
+    :param table: table to display - text file where are included some information.
+    :param title_list: list containing table headers
     """
+    columns_width = width_columns(table)
+    amount_of_columns = len(columns_width)
+    titles_width = (list(len(i) for i in title_list))
+    total_width = [columns_width[i] if columns_width[i] > titles_width[i]
+                   else titles_width[i] for i in range(amount_of_columns)]
 
+    columns_keys = ["pos" + str(index) for index in range(amount_of_columns)]
+    columns_dict = dict(zip(columns_keys, total_width))
+    string = ''.join(
+        ['| {:^{' + columns_keys[index] + '}} ' for index in range(amount_of_columns)]) + "|"
+    sum_of_column_width = sum_values(
+        total_width) + 1  # due to end in string "|"
+    PADDINGS = 3
 
+    print("-" * (sum_of_column_width + (amount_of_columns * PADDINGS)))
+    for record in table:
+        print(string.format(*record, **columns_dict))
+        print("-" * (sum_of_column_width + (amount_of_columns * PADDINGS)))
 
 
 def print_result(result, label):
