@@ -1,35 +1,15 @@
-""" Inventory module
-
-Data table structure:
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * name (string): Name of item
-    * manufacturer (string)
-    * purchase_year (number): Year of purchase
-    * durability (number): Years it can be used
-"""
-
-# everything you'll need is imported:
-# User interface module
 import ui
 # data manager module
 import data_manager
 # common module
 import common
-
 table = data_manager.get_table_from_file(file_name="inventory.csv")
 title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
 actual_year = 2019
 def start_module():
     """
-    Starts this module and displays its menu.
-     * User can access default special features from here.
-     * User can go back to main menu from here.
-
-    Returns:
-        None
+    Menu of this file.
     """
-
     inputs = input(["Please enter a number: "])
     option = inputs[0]
     if option == "1":
@@ -37,11 +17,11 @@ def start_module():
     elif option == "2":
         add(table)
     elif option == "3":
-        ui.print_table(table, title_list)
+        show_table(table)
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
     elif option == "4":
-        ui.print_table(table, title_list)
+        show_table(table)
         id_ = input("Enter id of record who you want edit: ")
         update(table, id_)
     elif option == "5":
@@ -64,14 +44,9 @@ def show_table(table):
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: list of all items in database
+    :return: updated table
     """
-
     new_record = []
     inventory_records = ["Enter name of item: ", "Enter manufacturer: ", "Enter year of purchase: ",
                          "Enter years how can be used: "]
@@ -92,48 +67,38 @@ def add(table):
     updated_table = table + [new_record]
     data_manager.write_table_to_file(file_name="inventory.csv", table=updated_table)
     ui.print_table(updated_table, title_list)
-    return table
+    return updated_table
 
 
 def remove(table, id_):
     """
     Remove a record with a given id from the table.
-
-    Args:
-        table (list): table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        list: Table without specified record.
+    :param table: list of all items in database
+    :param id_: input where user enter id
+    :return: list with a new record
     """
-
     new_list = []
     for records in table:
         if id_ not in records:
             new_list.append(records)
         data_manager.write_table_to_file(file_name="inventory.csv", table=new_list)
-    ui.print_table(new_list, title_list)
-    return table
+    show_table(new_list)
+    return new_list
 
 
 def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table (list): list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        list: table with updated record
+    :param table: list of all items in database
+    :param id_: input where user enter id
+    :return: updated table
     """
-
     updated_record = []
     options_of_update = ["name", "manufacturer", "purchase", "years"]
     for record in table:
         if id_ in record:
             updated_record.append(record)
-    ui.print_table(updated_record, title_list)
+    show_table(updated_record)
     user_input = input("What do you want change ?").lower()
     ask_user = 0
     while ask_user < 1:
@@ -148,10 +113,9 @@ def update(table, id_):
             if record[0] in table:
                 table = updated_record
         data_manager.write_table_to_file(file_name="inventory.csv", table=table)
-        ui.print_table(table, title_list)
+        show_table(table)
     return table
-# special functions:
-# ------------------
+
 
 def get_available_items(table):
     """
@@ -170,17 +134,26 @@ def get_available_items(table):
 
 def get_average_durability_by_manufacturers(table):
     """
-    Question: What are the average durability times for each manufacturer?
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-        dict: a dictionary with this structure: { [manufacturer] : [avg] }
+    Display average durability by manufacturers
+    :param table: list of all items in database
+    :return: dictionary with average of durability
     """
-    lista = []
+    list_of_durability = []
+    companies = [(record[2], record[4]) for record in table]
+    list_of_manufacturer = []
+    avg_list = []
+    avg_dict = {}
     for records in table:
-        print(records[3])
-
-
-start_module()
+        if records[2] not in list_of_manufacturer:
+            list_of_manufacturer.append(records[2])
+    for company in list_of_manufacturer:
+        temp_list = []
+        for value in companies:
+            if company == value[0]:
+                temp_list.append(int(value[1]))
+        list_of_durability.append(temp_list)
+    for records in list_of_durability:
+        avg_list.append(common.sum_values(records) / len(records))
+    for i in range(len(avg_list)):
+        avg_dict[list_of_manufacturer[i]] = avg_list[i]
+    return avg_dict
