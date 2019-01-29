@@ -178,9 +178,30 @@ def get_average_durability_by_manufacturers(table):
     Returns:
         dict: a dictionary with this structure: { [manufacturer] : [avg] }
     """
-    lista = []
+
+    list_of_durability = []
+    companies = [(record[2], record[4]) for record in table]
+    list_of_manufacturer = []
+    avg_list = []
+    avg_dict = {}
     for records in table:
-        print(records[3])
+        if records[2] not in list_of_manufacturer:
+            list_of_manufacturer.append(records[2])
+
+    for company in list_of_manufacturer:
+        temp_list = []
+        for value in companies:
+            if company == value[0]:
+                temp_list.append(int(value[1]))
+        list_of_durability.append(temp_list)
+
+    for records in list_of_durability:
+        avg_list.append(common.sum_values(records) / len(records))
+
+    for i in range(len(avg_list)):
+        avg_dict[list_of_manufacturer[i]] = avg_list[i]
+
+    print(avg_dict)
 
 
 start_module()
