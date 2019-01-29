@@ -16,10 +16,12 @@ import ui
 # data manager module
 import data_manager
 # common module
-#import common
+import common
 
 table = data_manager.get_table_from_file(file_name="sales.csv")
 title_list = ["Id", "Title", "Price", "Month", "Day", "Year"]
+
+
 def start_module():
     """
     Starts this module and displays its menu.
@@ -43,25 +45,19 @@ def start_module():
         id_ = input("Enter id of record who you want edit: ")
         update(table, id_)
     elif option == "5":
-        sales.start_module()
+        get_lowest_price_item_id(table)
     elif option == "6":
-        crm.start_module()
+        get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
     elif option == "0":
         sys.exit(0)
     else:
         raise KeyError("There is no such option.")
 
 
-
 def show_table(table):
     """
-    Display a table
-
-    Args:
-        table (list): list of lists to be displayed.
-
-    Returns:
-        None
+    Display a table from another module.
+    :param table: table to display - text file where are included some information.
     """
     ui.print_table(table, title_list)
 
@@ -69,52 +65,54 @@ def show_table(table):
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: text file where are included some information.
+    :return: list with a new record
     """
     new_record = []
     sales_records = ["Enter title: ", "Enter price: ", "Enter month: ", "Enter day: ", "Enter year: "]
-    id = "DSFsdfsdfj"
-    new_record.append(id)
+    new_record.append(common.generate_random(table))
+    new_record.append(input(sales_records[0]))
+
     i = 1
-    title = input(sales_records[0])
-    new_record.append(title)
     while i < len(sales_records):
+        print(new_record)
         integer_inputs = input(sales_records[i])
-        if integer_inputs.isdigit():
-            new_record.append(integer_inputs)
-            i += 1
+        if integer_inputs.isdigit() and int(integer_inputs) > 0:
+            if i == 2:
+                if int(integer_inputs) <= 12:
+                    new_record.append(integer_inputs)
+                    i += 1
+
+            elif i == 3:
+                if int(integer_inputs) <= 12:
+                    new_record.append(integer_inputs)
+                    i += 1
+            else:
+                new_record.append(integer_inputs)
+                i += 1
         else:
             print("error!")
-    print(new_record)
+
     updated_table = table + [new_record]
     data_manager.write_table_to_file(file_name="sales.csv", table=updated_table)
-    ui.print_table(updated_table, title_list)
-    return table
+    show_table(updated_table)
+
+    return updated_table
+
+print(add(table))
 
 
 def remove(table, id_):
     """
     Remove a record with a given id from the table.
-
-    Args:
-        table (list): table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        list: Table without specified record.
+    :param table: text file where are included some information.
+    :param id_: id/key record to be removed
+    :return: list without specified record.
     """
-    new_list = []
-    for records in table:
-        if id_ not in records:
-            new_list.append(records)
-        data_manager.write_table_to_file(file_name="sales.csv", table=new_list)
-    show_table(new_list)
-    return table
+    update_table = [records for records in table if id_ not in records]
+    data_manager.write_table_to_file(file_name="sales.csv", table=update_table)
+    show_table(update_table)
+    return update_table
 
 
 def update(table, id_):
