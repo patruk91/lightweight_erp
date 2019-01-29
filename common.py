@@ -20,3 +20,16 @@ def generate_random(table):
         id_list = [id_key[0] for id_key in table]
         if generated not in id_list:
             return generated
+
+
+def sum_values(numbers_list):
+    """
+    Sum values from list.
+    :param numbers_list: List with integers.
+    :return: sum(data_list)
+    """
+    sum_numbers = 0
+    for number in numbers_list:
+        sum_numbers += number
+
+    return sum_numbers

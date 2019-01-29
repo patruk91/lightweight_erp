@@ -1,4 +1,5 @@
 """ User Interface (UI) module """
+import common
 
 
 def get_width_columns(table, title_list):
@@ -18,17 +19,6 @@ def get_width_columns(table, title_list):
 
     return width_columns
 
-
-def sum_values(numbers_list):
-    """
-    Sum values from list.
-    :param numbers_list: List with integers.
-    :return: sum(data_list)
-    """
-    sum_numbers = 0
-    for number in numbers_list:
-        sum_numbers += number
-    return sum_numbers
 
 
 def get_position_value_dictionary(table, title_list):
@@ -53,7 +43,7 @@ def get_total_sum_of_width_columns(table, title_list):
     :return: Sum of width
     """
     width_columns = get_width_columns(table, title_list)
-    total_column_lenght = sum_values(width_columns) + 1  # due to end in var:string "|"
+    total_column_lenght = common.sum_values(width_columns) + 1  # due to end in var:string "|"
     number_of_columns = len(width_columns)
     PADDINGS = 3
 
