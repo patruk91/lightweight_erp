@@ -19,6 +19,7 @@ import common
 
 table = data_manager.get_table_from_file(file_name="inventory.csv")
 title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
+actual_year = 2019
 def start_module():
     """
     Starts this module and displays its menu.
@@ -44,9 +45,9 @@ def start_module():
         id_ = input("Enter id of record who you want edit: ")
         update(table, id_)
     elif option == "5":
-        sales.start_module()
+        get_available_items(table)
     elif option == "6":
-        crm.start_module()
+        get_average_durability_by_manufacturers(table)
     elif option == "0":
         sys.exit(0)
     else:
@@ -154,16 +155,17 @@ def update(table, id_):
 
 def get_available_items(table):
     """
-    Question: Which items have not exceeded their durability yet?
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-        list: list of lists (the inner list contains the whole row with their actual data types)
+    Display items with actual durability
+    :param table: list of all items in database
+    :return: list of items with actual durability
     """
-
-    # your code
+    list_of_validate_records = []
+    for records in table:
+        sum_of_year_and_durability = int(records[3]) + int(records[4])
+        if sum_of_year_and_durability >= actual_year:
+            list_of_validate_records.append(records)
+    show_table(list_of_validate_records)
+    return list_of_validate_records
 
 
 def get_average_durability_by_manufacturers(table):
@@ -176,5 +178,9 @@ def get_average_durability_by_manufacturers(table):
     Returns:
         dict: a dictionary with this structure: { [manufacturer] : [avg] }
     """
+    lista = []
+    for records in table:
+        print(records[3])
 
-    # your code
+
+start_module()
