@@ -17,6 +17,11 @@ import data_manager
 import common
 
 
+file_name = "customers.csv"
+table = data_manager.get_table_from_file(file_name)
+table_structure = ["Id", "Name", "Email", "Subscribed"]
+
+
 def start_module():
     """
     Starts this module and displays its menu.
@@ -32,16 +37,10 @@ def start_module():
 
 def show_table(table):
     """
-    Display a table
-
-    Args:
-        table (list): list of lists to be displayed.
-
-    Returns:
-        None
+    Display a table from another module.
+    :param table: table to display - text file where are included some information.
     """
-
-    # your code
+    ui.print_table(table, table_structure)
 
 
 def add(table):
@@ -94,35 +93,48 @@ def update(table, id_):
     return table
 
 
-# special functions:
-# ------------------
+def handle_sort_names(longest_names):
+    """
+    Sort the string data in ascending order.
+    :param longest_names: Name of people to sort.
+    :return: list with sorted names
+    """
+    x = 0
+    while x < len(longest_names):
+        for index in range(len(longest_names) - 1):
+            if longest_names[index] > longest_names[index + 1]:
+                temp = longest_names[index + 1]
+                longest_names[index + 1] = longest_names[index]
+                longest_names[index] = temp
+        x += 1
+    return longest_names
+
 
 def get_longest_name_id(table):
     """
-        Question: What is the id of the customer with the longest name?
-
-        Args:
-            table (list): data table to work on
-
-        Returns:
-            string: id of the longest name (if there are more than one, return
+    Find id of the customer with the longest name.
+    :param table: list of lists with data form crm department
+    :return: Id of the longest name (if there are more than one, return
                 the last by alphabetical order of the names)
-        """
+    """
+    names = [(len(record[1]), record[1]) for record in table]
+    max_len_name = max([value[0]for value in names])
+    longest_names = [name[1] for name in names if name[0] == max_len_name]
 
-    # your code
+    longest_names = handle_sort_names(longest_names)
+    get_index_name = [index for index, name in enumerate(names) if name[1] == longest_names[-1]][0]
+
+    return table[get_index_name][0]
 
 
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """
-        Question: Which customers has subscribed to the newsletter?
+    Find customers has subscribed the newsletter.
+    :param table: list of lists with data form crm department
+    :return: list with subscribed customers
+    """
+    subscribed_emails = [record[2] + ";" + record[1] for record in table if int(record[3]) == 1]
+    return subscribed_emails
 
-        Args:
-            table (list): data table to work on
-
-        Returns:
-            list: list of strings (where a string is like "email;name")
-        """
-
-    # your code

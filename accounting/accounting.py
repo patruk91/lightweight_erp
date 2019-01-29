@@ -56,16 +56,10 @@ def start_module():
 
 def show_table(table):
     """
-    Display a table
-
-    Args:
-        table (list): list of lists to be displayed.
-
-    Returns:
-        None
+    Display a table from another module.
+    :param table: table to display - text file where are included some information.
     """
-
-    # your code
+    ui.print_table(table, table_structure)
 
 
 def add(table):
@@ -127,31 +121,31 @@ def which_year_max(table):
     :param table: list of lists with data form account department
     :return: max year numer
     """
-    account_data = data_manager.get_table_from_file(file_name)
-    transactions = [(amount[4], int(amount[5])) for amount in account_data]
-    max_amount = max([int(amount[5]) for amount in account_data])
+    transactions = [(amount[4], int(amount[5])) for amount in table]
+    max_amount = max([int(amount[5]) for amount in table])
     year_index = [index for index in range(len(transactions))
                   if transactions[index][1] == max_amount and
                   transactions[index][0] == "in"]
 
     if len(year_index) > 1:
-        years_max = [int(account_data[year_index[index]][3]) for index in range(len(year_index))]
+        years_max = [int(table[year_index[index]][3]) for index in range(len(year_index))]
         return years_max
 
-    year_max = account_data[year_index[0]][3]
+    year_max = table[year_index[0]][3]
+    show_table([table[year_index[0]]])
     return year_max
 
 
 def avg_amount(table, year):
     """
-    Question: What is the average (per item) profit in a given year? [(profit)/(items count)]
-
-    Args:
-        table (list): data table to work on
-        year (number)
-
-    Returns:
-        number
+    Calculate average (per item) profit in a given year.
+    :param table: list of lists with data form account department
+    :param year: find the biggest profit by year
+    :return: profit = (income - outflow)/(items count)
     """
+    year_by_income = [(record[4], int(record[5])) for record in table if int(record[3]) == year]
+    income = [wages[1] for wages in year_by_income if wages[0] == "in"]
+    outflow = [wages[1] for wages in year_by_income if wages[0] == "out"]
+    profit = (common.sum_values(income) - common.sum_values(outflow)) / len(year_by_income)
 
-    # your code
+    return profit
