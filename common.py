@@ -17,7 +17,7 @@ def generate_random(table):
     while True:
         string_generator = [random.choice(char) for char in unique_values for _ in range(2)]
         random.shuffle(string_generator)
-        id_gen = "".join(string_generator)
+        generated = "".join(string_generator)
         id_list = [id_key[0] for id_key in table]
-        if id_gen not in id_list:
+        if generated not in id_list:
             return generated
