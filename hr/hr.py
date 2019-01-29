@@ -16,6 +16,11 @@ import data_manager
 import common
 
 
+file_name = "persons.csv"
+table = data_manager.get_table_from_file(file_name)
+table_structure = ["Id", "Name", "Birth Year"]
+
+
 def start_module():
     """
     Starts this module and displays its menu.
@@ -31,16 +36,10 @@ def start_module():
 
 def show_table(table):
     """
-    Display a table
-
-    Args:
-        table (list): list of lists to be displayed.
-
-    Returns:
-        None
+    Display a table from another module.
+    :param table: table to display - text file where are included some information.
     """
-
-    # your code
+    ui.print_table(table, table_structure)
 
 
 def add(table):
@@ -98,16 +97,14 @@ def update(table, id_):
 
 def get_oldest_person(table):
     """
-    Question: Who is the oldest person?
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-        list: A list of strings (name or names if there are two more with the same value)
+    Find the oldest persons
+    :param table: list of lists with data form account department
+    :return: list with oldest persons name
     """
 
-    # your code
+    oldest_year = min([record[2] for record in table])
+    oldest_names = [name[1] for name in table if name[2] == oldest_year]
+    return oldest_names
 
 
 def get_persons_closest_to_average(table):
