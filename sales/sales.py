@@ -39,7 +39,9 @@ def start_module():
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
     elif option == "4":
-        accounting.start_module()
+        ui.print_table(table, title_list)
+        id_ = input("Enter id of record who you want edit: ")
+        update(table, id_)
     elif option == "5":
         sales.start_module()
     elif option == "6":
@@ -86,7 +88,6 @@ def add(table):
         if integer_inputs.isdigit():
             new_record.append(integer_inputs)
             i += 1
-
         else:
             print("error!")
     print(new_record)
@@ -127,12 +128,41 @@ def update(table, id_):
     Returns:
         list: table with updated record
     """
-
-    # your code
-
+    updated_record = []
+    options_of_update = ["title", "price", "month", "day", "year"]
+    for record in table:
+        if id_ in record:
+            updated_record.append(record)
+    ui.print_table(updated_record, title_list)
+    user_input = input("What do you want change ?").lower()
+    ask_user = 0
+    while ask_user < 1:
+        new_data = input("Actual " + user_input + ": " +
+                         updated_record[0][options_of_update.index(user_input) + 1] + "\nEnter new: ")
+        if user_input in options_of_update:
+            if options_of_update.index(user_input) + 1 == 1 or options_of_update.index(user_input) + 1 == 2:
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 3 and new_data <= "12":
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 4 and new_data <= "31":
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 5 and len(new_data) == 4:
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            else:
+                print("Max amount of month is 12, of day is 31 and year must have four numbers!")
+            for record in updated_record:
+                if record[0] in table:
+                    table = updated_record
+            data_manager.write_table_to_file(file_name="sales.csv", table=table)
+            ui.print_table(table, title_list)
+        else:
+            print("Something went wrong!")
+            break
     return table
-
-
 # special functions:
 # ------------------
 
