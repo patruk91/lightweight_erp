@@ -88,7 +88,6 @@ def add(table):
         if integer_inputs.isdigit():
             new_record.append(integer_inputs)
             i += 1
-
         else:
             print("error!")
     print(new_record)
@@ -130,37 +129,40 @@ def update(table, id_):
         list: table with updated record
     """
     updated_record = []
+    options_of_update = ["title", "price", "month", "day", "year"]
     for record in table:
         if id_ in record:
             updated_record.append(record)
     ui.print_table(updated_record, title_list)
     user_input = input("What do you want change ?").lower()
-    if user_input == "title":
-        new_title = input("Actual title: " + updated_record[0][1] + "\nEnter new: ")
-        updated_record[0][1] = new_title
-    elif user_input == "price":
-        new_price = int(input("Actual price: " + updated_record[0][2] + "\nEnter new: "))
-        updated_record[0][2] = new_price
-    elif user_input == "month":
-        new_month = int(input("Actual month: " + updated_record[0][3] + "\nEnter new: "))
-        updated_record[0][3] = new_month
-    elif user_input == "day":
-        new_day = int(input("Actual day: " + updated_record[0][4] + "\nEnter new: "))
-        updated_record[0][4] = new_day
-    elif user_input == "year":
-        new_year = int(input("Actual year: " + updated_record[0][5] + "\nEnter new: "))
-        updated_record[0][5] = new_year
-    else:
-        print("Something went wrong!")
-    print(updated_record)
-
-
-
-
-
+    ask_user = 0
+    while ask_user < 1:
+        new_data = input("Actual " + user_input + ": " +
+                         updated_record[0][options_of_update.index(user_input) + 1] + "\nEnter new: ")
+        if user_input in options_of_update:
+            if options_of_update.index(user_input) + 1 == 1 or options_of_update.index(user_input) + 1 == 2:
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 3 and new_data <= "12":
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 4 and new_data <= "31":
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            elif options_of_update.index(user_input) + 1 == 5 and len(new_data) == 4:
+                updated_record[0][options_of_update.index(user_input) + 1] = new_data
+                ask_user += 1
+            else:
+                print("Max amount of month is 12, of day is 31 and year must have four numbers!")
+            for record in updated_record:
+                if record[0] in table:
+                    table = updated_record
+            data_manager.write_table_to_file(file_name="sales.csv", table=table)
+            ui.print_table(table, title_list)
+        else:
+            print("Something went wrong!")
+            break
     return table
-
-
 # special functions:
 # ------------------
 
