@@ -18,6 +18,10 @@ import data_manager
 # common module
 import common
 
+file_name = "items.csv"
+table = data_manager.get_table_from_file(file_name)
+table_structure = ["Id", "Month", "Day", "Year", "Type", "Amount ($)"]
+
 
 def start_module():
     """
@@ -29,7 +33,25 @@ def start_module():
         None
     """
 
-    # you code
+    inputs = input(["Please enter a number: "])
+    option = inputs[0]
+    if option == "1":
+        show_table(table)
+    elif option == "2":
+        add(table)
+    elif option == "3":
+        id_ = input("Enter id of record to delete: ")
+        remove(table, id_)
+    elif option == "4":
+        update(table, id_)
+    elif option == "5":
+        which_year_max(table)
+    elif option == "6":
+        avg_amount(table, year)
+    elif option == "0":
+        sys.exit(0)
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(table):
@@ -101,16 +123,23 @@ def update(table, id_):
 
 def which_year_max(table):
     """
-    Question: Which year has the highest profit? (profit = in - out)
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-        number
+    Find the year where was highest income.
+    :param table: list of lists with data form account department
+    :return: max year numer
     """
+    account_data = data_manager.get_table_from_file(file_name)
+    transactions = [(amount[4], int(amount[5])) for amount in account_data]
+    max_amount = max([int(amount[5]) for amount in account_data])
+    year_index = [index for index in range(len(transactions))
+                  if transactions[index][1] == max_amount and
+                  transactions[index][0] == "in"]
 
-    # your code
+    if len(year_index) > 1:
+        years_max = [int(account_data[year_index[index]][3]) for index in range(len(year_index))]
+        return years_max
+
+    year_max = account_data[year_index[0]][3]
+    return year_max
 
 
 def avg_amount(table, year):
