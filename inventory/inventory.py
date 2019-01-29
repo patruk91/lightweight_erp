@@ -1,22 +1,8 @@
-""" Inventory module
-
-Data table structure:
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * name (string): Name of item
-    * manufacturer (string)
-    * purchase_year (number): Year of purchase
-    * durability (number): Years it can be used
-"""
-
-# everything you'll need is imported:
-# User interface module
 import ui
 # data manager module
 import data_manager
 # common module
 import common
-
 table = data_manager.get_table_from_file(file_name="inventory.csv")
 title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
 actual_year = 2019
@@ -31,11 +17,11 @@ def start_module():
     elif option == "2":
         add(table)
     elif option == "3":
-        ui.print_table(table, title_list)
+        show_table(table)
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
     elif option == "4":
-        ui.print_table(table, title_list)
+        show_table(table)
         id_ = input("Enter id of record who you want edit: ")
         update(table, id_)
     elif option == "5":
@@ -129,8 +115,7 @@ def update(table, id_):
         data_manager.write_table_to_file(file_name="inventory.csv", table=table)
         show_table(table)
     return table
-# special functions:
-# ------------------
+
 
 def get_available_items(table):
     """
