@@ -130,15 +130,11 @@ def get_longest_name_id(table):
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
-
     """
-        Question: Which customers has subscribed to the newsletter?
+    Find customers has subscribed the newsletter.
+    :param table: list of lists with data form crm department
+    :return: list with subscribed customers
+    """
+    subscribed_emails = [record[2] + ";" + record[1] for record in table if int(record[3]) == 1]
+    return subscribed_emails
 
-        Args:
-            table (list): data table to work on
-
-        Returns:
-            list: list of strings (where a string is like "email;name")
-        """
-
-    # your code
