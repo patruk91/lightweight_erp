@@ -57,7 +57,6 @@ def show_table(table):
     """
     Display records from file in table
     """
-
     ui.print_table(table, title_list)
 
 
@@ -88,8 +87,7 @@ def add(table):
             new_record.append(integer_inputs)
             i += 1
         else:
-            print("error!")
-    print(new_record)
+            ui.print_error_message("Enter numbers!")
     updated_table = table + [new_record]
     data_manager.write_table_to_file(file_name="inventory.csv", table=updated_table)
     ui.print_table(updated_table, title_list)
@@ -144,7 +142,7 @@ def update(table, id_):
             updated_record[0][options_of_update.index(user_input) + 1] = new_data
             ask_user += 1
         else:
-            print("No option to change!")
+            ui.print_error_message("No option i database to change!")
         for record in updated_record:
             if record[0] in table:
                 table = updated_record
@@ -180,6 +178,3 @@ def get_average_durability_by_manufacturers(table):
     """
 
     # your code
-
-
-start_module()
