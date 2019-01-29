@@ -104,7 +104,7 @@ def get_longest_name_id(table):
     max_len_name = max([value[0]for value in names])
     longest_names = [name[1] for name in names if name[0] == max_len_name]
 
-    longest_names = handle_sort_names(longest_names)
+    longest_names = common.handle_sort_names(longest_names)
     get_index_name = [index for index, name in enumerate(names) if name[1] == longest_names[-1]][0]
 
     return table[get_index_name][0]
