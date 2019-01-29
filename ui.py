@@ -128,13 +128,7 @@ def get_inputs(list_labels, title):
 
 def print_error_message(message):
     """
-    Displays an error message (example: ``Error: @message``)
-
-    Args:
-        message (str): error message to be displayed
-
-    Returns:
-        None: This function doesn't return anything it only prints to console.
+    Displays an error message
+    :param message: error message to be displayed
     """
-
-    # your code
+    print("{}" .format(message))
