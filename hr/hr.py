@@ -98,7 +98,7 @@ def update(table, id_):
 def get_oldest_person(table):
     """
     Find the oldest persons
-    :param table: list of lists with data form account department
+    :param table: list of lists with data form hr department
     :return: list with oldest persons name
     """
 
@@ -109,13 +109,13 @@ def get_oldest_person(table):
 
 def get_persons_closest_to_average(table):
     """
-    Question: Who is the closest to the average age?
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-        list: list of strings (name or names if there are two more with the same value)
+    Find the person, which is closest to average age
+    :param table: list of lists with data form hr department
+    :return: list with persons, which is closet to average age
     """
+    years = [int(year[2]) for year in table]
+    years_avg = common.sum_values(years) / len(years)
+    similar_years = min(years, key=lambda x: abs(x - years_avg))
 
-    # your code
+    closest_person = [record[1] for record in table if int(record[2]) == similar_years]
+    return closest_person
