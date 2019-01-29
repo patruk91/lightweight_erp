@@ -93,23 +93,6 @@ def update(table, id_):
     return table
 
 
-def handle_sort_names(longest_names):
-    """
-    Sort the string data in ascending order.
-    :param longest_names: Name of people to sort.
-    :return: list with sorted names
-    """
-    x = 0
-    while x < len(longest_names):
-        for index in range(len(longest_names) - 1):
-            if longest_names[index] > longest_names[index + 1]:
-                temp = longest_names[index + 1]
-                longest_names[index + 1] = longest_names[index]
-                longest_names[index] = temp
-        x += 1
-    return longest_names
-
-
 def get_longest_name_id(table):
     """
     Find id of the customer with the longest name.
