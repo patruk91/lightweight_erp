@@ -50,7 +50,7 @@ def start_module():
     elif option == "5":
         get_lowest_price_item_id(table)
     elif option == "6":
-        get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+        get_items_sold_between(table, month_from=2, day_from=12, year_from=2016, month_to=7, day_to=6, year_to=2016)
     elif option == "0":
         sys.exit(0)
     else:
@@ -65,26 +65,32 @@ def show_table(table):
     ui.print_table(table, title_list)
 
 
-def check_if_input_is_number(integer_inputs):
-    if integer_inputs.isdigit() and int(integer_inputs) > 0:
+def check_if_input_is_number(handle_inputs):
+    """
+    Check if input parameter is number.
+    :param handle_inputs: parameters provided from user.
+    :return: boolean
+    """
+    if handle_inputs.isdigit() and int(handle_inputs) > 0:
         return True
     return False
 
 
-def evaluate_user_input(i, integer_inputs, border_conditions):
-    if check_if_data_is_in_range(i, integer_inputs, border_conditions):
-        return True
-    return False
-
-
-def check_if_data_is_in_range(i, integer_inputs, border_conditions):
-    if i != 2 and i != 3 and int(integer_inputs) <= border_conditions[i]:
+def check_if_data_is_in_range(i, handle_inputs, border_conditions):
+    """
+    Check if data provided from user is in definded border conditions.
+    :param i: iterator from loop
+    :param handle_inputs: parameters provided from user.
+    :param border_conditions: list with maximum acceptable
+    :return: boolean
+    """
+    if i != 2 and i != 3 and int(handle_inputs) <= border_conditions[i]:
         return True
     elif i == 2:
-        if int(integer_inputs) <= border_conditions[i]:
+        if int(handle_inputs) <= border_conditions[i]:
             return True
     elif i == 3:
-        if int(integer_inputs) <= border_conditions[i]:
+        if int(handle_inputs) <= border_conditions[i]:
             return True
     return False
 
@@ -98,14 +104,14 @@ def add(table):
     new_record = []
 
     new_record.append(common.generate_random(table))
-    new_record.append(input(update_options[0]))
+    new_record.append(input("Enter " + update_options[0] + ": "))
 
     i = 1
     while i < len(update_options):
-        integer_inputs = input("Enter" + update_options[i])
-        if check_if_input_is_number(integer_inputs):
-            if evaluate_user_input(i, integer_inputs, border_conditions):
-                new_record.append(integer_inputs)
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        if check_if_input_is_number(handle_inputs):
+            if check_if_data_is_in_range(i, handle_inputs, border_conditions):
+                new_record.append(handle_inputs)
                 i += 1
         else:
             print("error!")
@@ -128,10 +134,6 @@ def remove(table, id_):
     data_manager.write_table_to_file(file_name, table=update_table)
     show_table(update_table)
     return update_table
-
-
-def handle_chosen_options():
-    pass
 
 
 def update(table, id_):
@@ -159,7 +161,7 @@ def update(table, id_):
             if chosen_option == 1:
                 searched_record[chosen_option] = new_data
                 i += 1
-            elif check_if_input_is_number(new_data) and evaluate_user_input(
+            elif check_if_input_is_number(new_data) and check_if_data_is_in_range(
                     chosen_option - + id_place, new_data, border_conditions):
                 searched_record[chosen_option] = new_data
                 i += 1
@@ -171,7 +173,8 @@ def update(table, id_):
     ui.print_table([searched_record], title_list)
     return table
 
-print(update(table, id_="kH35Jr#&"))
+print(update(table, id_= "kH35Jr#&"))
+
 
 def get_lowest_price_item_id(table):
     """
@@ -208,5 +211,4 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
         list: list of lists (the filtered table)
     """
 
-    # your code
 start_module()
