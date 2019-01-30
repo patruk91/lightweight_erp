@@ -5,7 +5,7 @@ import data_manager
 import common
 table = data_manager.get_table_from_file(file_name="inventory.csv")
 title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
-actual_year = 2019
+actual_year = 2017
 def start_module():
     """
     Menu of this file.
@@ -123,13 +123,10 @@ def get_available_items(table):
     :param table: list of all items in database
     :return: list of items with actual durability
     """
-    list_of_validate_records = []
-    for records in table:
-        sum_of_year_and_durability = int(records[3]) + int(records[4])
-        if sum_of_year_and_durability >= actual_year:
-            list_of_validate_records.append(records)
-    show_table(list_of_validate_records)
-    return list_of_validate_records
+    actual_durability = [record for record in table if
+                         int(record[3]) + int(record[4]) >= actual_year]
+    show_table(actual_durability)
+    return actual_durability
 
 
 def get_average_durability_by_manufacturers(table):
@@ -157,3 +154,4 @@ def get_average_durability_by_manufacturers(table):
     for i in range(len(avg_list)):
         avg_dict[list_of_manufacturer[i]] = avg_list[i]
     return avg_dict
+
