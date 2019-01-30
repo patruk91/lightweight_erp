@@ -62,6 +62,36 @@ def show_table(table):
     ui.print_table(table, title_list)
 
 
+def check_if_input_is_number(integer_inputs):
+    if integer_inputs.isdigit() and int(integer_inputs) > 0:
+        return True
+    return False
+
+
+def evaluate_user_input(i, integer_inputs, border_conditions):
+    if check_if_data_is_in_range(i, integer_inputs, border_conditions):
+        return True
+
+    elif check_if_data_is_in_range(i, integer_inputs, border_conditions):
+        return True
+
+    elif check_if_data_is_in_range(i, integer_inputs, border_conditions):
+        return True
+    return False
+
+
+def check_if_data_is_in_range(i, integer_inputs, border_conditions):
+    if i != 2 and i != 3 and int(integer_inputs) <= border_conditions[i]:
+        return True
+    elif i == 2:
+        if int(integer_inputs) <= border_conditions[i]:
+            return True
+    elif i == 3:
+        if int(integer_inputs) <= border_conditions[i]:
+            return True
+    return False
+
+
 def add(table):
     """
     Asks user for input and adds it into the table.
@@ -70,26 +100,18 @@ def add(table):
     """
     new_record = []
     sales_records = ["Enter title: ", "Enter price: ", "Enter month: ", "Enter day: ", "Enter year: "]
+    border_conditions = ["", 10000000, 12, 31, 3000]
     new_record.append(common.generate_random(table))
     new_record.append(input(sales_records[0]))
 
     i = 1
     while i < len(sales_records):
-        print(new_record)
         integer_inputs = input(sales_records[i])
-        if integer_inputs.isdigit() and int(integer_inputs) > 0:
-            if i == 2:
-                if int(integer_inputs) <= 12:
-                    new_record.append(integer_inputs)
-                    i += 1
-
-            elif i == 3:
-                if int(integer_inputs) <= 12:
-                    new_record.append(integer_inputs)
-                    i += 1
-            else:
+        if check_if_input_is_number(integer_inputs):
+            if evaluate_user_input(i, integer_inputs, border_conditions):
                 new_record.append(integer_inputs)
                 i += 1
+
         else:
             print("error!")
 
