@@ -18,9 +18,12 @@ import data_manager
 # common module
 import common
 
-table = data_manager.get_table_from_file(file_name="sales.csv")
+file_name="sales.csv"
+table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Price", "Month", "Day", "Year"]
 
+update_options = ["title", "price", "month", "day", "year"]
+border_conditions = ["", 10000000, 12, 31, 3000]
 
 def start_module():
     """
@@ -71,12 +74,6 @@ def check_if_input_is_number(integer_inputs):
 def evaluate_user_input(i, integer_inputs, border_conditions):
     if check_if_data_is_in_range(i, integer_inputs, border_conditions):
         return True
-
-    elif check_if_data_is_in_range(i, integer_inputs, border_conditions):
-        return True
-
-    elif check_if_data_is_in_range(i, integer_inputs, border_conditions):
-        return True
     return False
 
 
@@ -99,19 +96,17 @@ def add(table):
     :return: list with a new record
     """
     new_record = []
-    sales_records = ["Enter title: ", "Enter price: ", "Enter month: ", "Enter day: ", "Enter year: "]
-    border_conditions = ["", 10000000, 12, 31, 3000]
+
     new_record.append(common.generate_random(table))
-    new_record.append(input(sales_records[0]))
+    new_record.append(input(update_options[0]))
 
     i = 1
-    while i < len(sales_records):
-        integer_inputs = input(sales_records[i])
+    while i < len(update_options):
+        integer_inputs = input("Enter" + update_options[i])
         if check_if_input_is_number(integer_inputs):
             if evaluate_user_input(i, integer_inputs, border_conditions):
                 new_record.append(integer_inputs)
                 i += 1
-
         else:
             print("error!")
 
@@ -120,8 +115,6 @@ def add(table):
     show_table(updated_table)
 
     return updated_table
-
-print(add(table))
 
 
 def remove(table, id_):
@@ -132,59 +125,53 @@ def remove(table, id_):
     :return: list without specified record.
     """
     update_table = [records for records in table if id_ not in records]
-    data_manager.write_table_to_file(file_name="sales.csv", table=update_table)
+    data_manager.write_table_to_file(file_name, table=update_table)
     show_table(update_table)
     return update_table
+
+
+def handle_chosen_options():
+    pass
 
 
 def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table (list): list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        list: table with updated record
+    :param table: text file where are included some information.
+    :param id_: id of a record to update
+    :return: list of list with updated record
     """
-    updated_record = []
-    options_of_update = ["title", "price", "month", "day", "year"]
-    for record in table:
-        if id_ in record:
-            updated_record.append(record)
-    ui.print_table(updated_record, title_list)
-    user_input = input("What do you want change ?").lower()
-    ask_user = 0
-    while ask_user < 1:
-        new_data = input("Actual " + user_input + ": " +
-                         updated_record[0][options_of_update.index(user_input) + 1] + "\nEnter new: ")
-        if user_input in options_of_update:
-            if options_of_update.index(user_input) + 1 == 1 or options_of_update.index(user_input) + 1 == 2:
-                updated_record[0][options_of_update.index(user_input) + 1] = new_data
-                ask_user += 1
-            elif options_of_update.index(user_input) + 1 == 3 and new_data <= "12":
-                updated_record[0][options_of_update.index(user_input) + 1] = new_data
-                ask_user += 1
-            elif options_of_update.index(user_input) + 1 == 4 and new_data <= "31":
-                updated_record[0][options_of_update.index(user_input) + 1] = new_data
-                ask_user += 1
-            elif options_of_update.index(user_input) + 1 == 5 and len(new_data) == 4:
-                updated_record[0][options_of_update.index(user_input) + 1] = new_data
-                ask_user += 1
+    searched_record = [record for record in table if id_ in record]
+    ui.print_table(searched_record, title_list)
+    searched_record = searched_record[0]  # unpack from list of lists
+    id_place = 1
+    # due to id in on the 0 position in list
+
+    i = 0
+    while i < 1:
+        user_input = input("What do you want change?").lower()
+        if user_input in update_options:
+            chosen_option = update_options.index(user_input) + id_place
+            new_data = input("Actual " + user_input + ": "
+                             + searched_record[chosen_option]
+                             + "\nEnter new: ")
+
+            if chosen_option == 1:
+                searched_record[chosen_option] = new_data
+                i += 1
+            elif check_if_input_is_number(new_data) and evaluate_user_input(
+                    chosen_option - + id_place, new_data, border_conditions):
+                searched_record[chosen_option] = new_data
+                i += 1
             else:
-                print("Max amount of month is 12, of day is 31 and year must have four numbers!")
-            for record in updated_record:
-                if record[0] in table:
-                    table = updated_record
-            data_manager.write_table_to_file(file_name="sales.csv", table=table)
-            ui.print_table(table, title_list)
+                print("some kind of error, to wide range for day month year etc")
         else:
-            print("Something went wrong!")
-            break
+            print("Provide correct value")
+    data_manager.write_table_to_file(file_name, table=table)
+    ui.print_table([searched_record], title_list)
     return table
-# special functions:
-# ------------------
+
+print(update(table, id_="kH35Jr#&"))
 
 def get_lowest_price_item_id(table):
     """
