@@ -84,7 +84,7 @@ def add(table):
                     i += 1
 
             elif i == 3:
-                if int(integer_inputs) <= 12:
+                if int(integer_inputs) <= 31:
                     new_record.append(integer_inputs)
                     i += 1
             else:
@@ -99,7 +99,7 @@ def add(table):
 
     return updated_table
 
-print(add(table))
+
 
 
 def remove(table, id_):
@@ -175,8 +175,11 @@ def get_lowest_price_item_id(table):
     Returns:
          string: id
     """
-
-    # your code
+    price = min([int(price[2]) for price in table])
+    title_with_min_price = [record[1] for record in table if int(record[2]) == price]
+    sorted_title = common.handle_sort_names(title_with_min_price)
+    result = [record[0] for record in table if record[1] == sorted_title[-1]]
+    return result[0]
 
 
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
