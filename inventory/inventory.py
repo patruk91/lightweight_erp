@@ -135,23 +135,22 @@ def get_average_durability_by_manufacturers(table):
     :param table: list of all items in database
     :return: dictionary with average of durability
     """
-    list_of_durability = []
-    companies = [(record[2], record[4]) for record in table]
     list_of_manufacturer = []
-    avg_list = []
-    avg_dict = {}
+    companies_durability = [(record[2], record[4]) for record in table]
+
     for records in table:
         if records[2] not in list_of_manufacturer:
             list_of_manufacturer.append(records[2])
-    for company in list_of_manufacturer:
-        temp_list = []
-        for value in companies:
-            if company == value[0]:
-                temp_list.append(int(value[1]))
-        list_of_durability.append(temp_list)
-    for records in list_of_durability:
-        avg_list.append(common.sum_values(records) / len(records))
-    for i in range(len(avg_list)):
-        avg_dict[list_of_manufacturer[i]] = avg_list[i]
-    return avg_dict
 
+    list_of_durability = [[int(company_dur[1]) for company_dur in
+                           companies_durability if company == company_dur[0]]
+                          for company in list_of_manufacturer]
+
+    average_durability = [str(common.sum_values(num_list) / len(num_list))
+                          for num_list in list_of_durability]
+
+    convert_avg_dur = [int(float(num)) if ".0" in num else float(num)
+                       for num in average_durability]
+
+    dict_avg_dur = dict(zip(list_of_manufacturer, convert_avg_dur))
+    return dict_avg_dur
