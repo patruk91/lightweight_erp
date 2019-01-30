@@ -117,9 +117,6 @@ def update(table, id_):
     return table
 
 
-# special functions:
-# ------------------
-
 def get_counts_by_manufacturers(table):
     """
     Display counts of games for each manufacturer
@@ -139,19 +136,16 @@ def get_counts_by_manufacturers(table):
     return dict_of_counts_by_manufacturer
 
 
-def get_average_by_manufacturer(table, manufacturer):
+def get_average_by_manufacturer(table, manufacturer="Ensemble Studios"):
     """
-    Question: What is the average amount of games in stock of a given manufacturer?
-
-    Args:
-        table (list): data table to work on
-        manufacturer (str): Name of manufacturer
-
-    Returns:
-         number
+    Display calculated average of games amount in stock for given manufacturer
+    :param table: list of all items in database
+    :param manufacturer: Name of manufacturer
+    :return: Average of games amount in stock
     """
-
-    # your code
-
-
-start_module()
+    ui.print_table(table, title_list)
+    manufacturer_and_stock = [(record[2], record[4]) for record in table if record[2] == manufacturer]
+    list_of_amount_in_stock = [int(games[1]) for games in
+                               manufacturer_and_stock if games[0] == manufacturer]
+    avg_count = [common.sum_values(list_of_amount_in_stock) / len(list_of_amount_in_stock)]
+    return avg_count[0]
