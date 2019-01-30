@@ -5,7 +5,7 @@ import data_manager
 import common
 table = data_manager.get_table_from_file(file_name="inventory.csv")
 title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
-actual_year = 2019
+actual_year = 2017
 def start_module():
     """
     Menu of this file.
@@ -123,13 +123,10 @@ def get_available_items(table):
     :param table: list of all items in database
     :return: list of items with actual durability
     """
-    list_of_validate_records = []
-    for records in table:
-        sum_of_year_and_durability = int(records[3]) + int(records[4])
-        if sum_of_year_and_durability >= actual_year:
-            list_of_validate_records.append(records)
-    show_table(list_of_validate_records)
-    return list_of_validate_records
+    actual_durability = [record for record in table if
+                         int(record[3]) + int(record[4]) >= actual_year]
+    show_table(actual_durability)
+    return actual_durability
 
 
 def get_average_durability_by_manufacturers(table):
@@ -138,22 +135,22 @@ def get_average_durability_by_manufacturers(table):
     :param table: list of all items in database
     :return: dictionary with average of durability
     """
-    list_of_durability = []
-    companies = [(record[2], record[4]) for record in table]
     list_of_manufacturer = []
-    avg_list = []
-    avg_dict = {}
+    companies_durability = [(record[2], record[4]) for record in table]
+
     for records in table:
         if records[2] not in list_of_manufacturer:
             list_of_manufacturer.append(records[2])
-    for company in list_of_manufacturer:
-        temp_list = []
-        for value in companies:
-            if company == value[0]:
-                temp_list.append(int(value[1]))
-        list_of_durability.append(temp_list)
-    for records in list_of_durability:
-        avg_list.append(common.sum_values(records) / len(records))
-    for i in range(len(avg_list)):
-        avg_dict[list_of_manufacturer[i]] = avg_list[i]
-    return avg_dict
+
+    list_of_durability = [[int(company_dur[1]) for company_dur in
+                           companies_durability if company == company_dur[0]]
+                          for company in list_of_manufacturer]
+
+    average_durability = [str(common.sum_values(num_list) / len(num_list))
+                          for num_list in list_of_durability]
+
+    convert_avg_dur = [int(float(num)) if ".0" in num else float(num)
+                       for num in average_durability]
+
+    dict_avg_dur = dict(zip(list_of_manufacturer, convert_avg_dur))
+    return dict_avg_dur
