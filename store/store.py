@@ -16,7 +16,8 @@ import ui
 import data_manager
 # common module
 import common
-
+table = data_manager.get_table_from_file(file_name="games.csv")
+title_list = ["Id", "Title", "Manufacturer", "Price", "In stock"]
 
 def start_module():
     """
@@ -28,7 +29,28 @@ def start_module():
         None
     """
 
-    # your code
+    inputs = input(["Please enter a number: "])
+    option = inputs[0]
+    if option == "1":
+        show_table(table)
+    elif option == "2":
+        add(table)
+    elif option == "3":
+        show_table(table)
+        id_ = input("Enter id of record to delete: ")
+        remove(table, id_)
+    elif option == "4":
+        show_table(table)
+        id_ = input("Enter id of record who you want edit: ")
+        update(table, id_)
+    elif option == "5":
+        get_counts_by_manufacturers(table)
+    elif option == "6":
+        get_average_by_manufacturer(table)
+    elif option == "0":
+        sys.exit(0)
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(table):
@@ -100,16 +122,21 @@ def update(table, id_):
 
 def get_counts_by_manufacturers(table):
     """
-    Question: How many different kinds of game are available of each manufacturer?
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-         dict: A dictionary with this structure: { [manufacturer] : [count] }
+    Display counts of games for each manufacturer
+    :param table: list of all items in database
+    :return: dictionary ith results
     """
-
-    # your code
+    list_of_manufacturer = []
+    kinds_and_manufacturer = [(record[1], record[2]) for record in table]
+    for records in table:
+        if records[2] not in list_of_manufacturer:
+            list_of_manufacturer.append(records[2])
+    list_of_kinds_of_games = [[games[0] for games in
+                               kinds_and_manufacturer if company == games[1]]
+                              for company in list_of_manufacturer]
+    count_of_games = [len(games) for games in list_of_kinds_of_games]
+    dict_of_counts_by_manufacturer = dict(zip(list_of_manufacturer, count_of_games))
+    return dict_of_counts_by_manufacturer
 
 
 def get_average_by_manufacturer(table, manufacturer):
@@ -125,3 +152,6 @@ def get_average_by_manufacturer(table, manufacturer):
     """
 
     # your code
+
+
+start_module()
