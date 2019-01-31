@@ -17,9 +17,9 @@ import common
 
 file_name = "persons.csv"
 table = data_manager.get_table_from_file(file_name)
-title_list = ["Id", "Name", "Birth Day"]
-update_options = ["name", "birth day"]
-border_conditions = ["", 31]
+title_list = ["Id", "Name", "Birth Year"]
+update_options = ["name", "birth year"]
+border_conditions = ["", 3000]
 
 
 def start_module():
@@ -61,23 +61,33 @@ def show_table(table):
     Display a table from another module.
     :param table: table to display - text file where are included some information.
     """
-    ui.print_table(table, table_structure)
+    ui.print_table(table, title_list)
 
 
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: text file where are included some information.
+    :return: list with a new record
     """
+    new_record = []
+    new_record.append(common.generate_random(table))
+    new_record.append(input("Enter " + update_options[0] + ": "))
+    i = 1
+    while i < len(update_options):
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        if common.check_if_input_is_number(handle_inputs):
+            if common.check_if_data_is_in_range(i, handle_inputs, border_conditions):
+                new_record.append(handle_inputs)
+                i += 1
+        else:
+            print("error!")
 
-    # your code
+    updated_table = table + [new_record]
+    data_manager.write_table_to_file(file_name, table=updated_table)
+    show_table(updated_table)
 
-    return table
+    return updated_table
 
 
 def remove(table, id_):
@@ -141,3 +151,4 @@ def get_persons_closest_to_average(table):
 
     closest_person = [record[1] for record in table if int(record[2]) == similar_years]
     return closest_person
+start_module()
