@@ -16,7 +16,7 @@ import ui
 import data_manager
 # common module
 import common
-file_name = "games.csv"
+file_name = "./store/games.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Manufacturer", "Price", "In stock"]
 

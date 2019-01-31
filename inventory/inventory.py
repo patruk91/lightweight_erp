@@ -4,7 +4,7 @@ import data_manager
 # common module
 import common
 
-file_name = "inventory.csv"
+file_name = "./inventory/inventory.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Price", "Month", "Day"]
 actual_year = 2019

@@ -5,7 +5,7 @@ import data_manager
 # common module
 import common
 
-file_name = "sales.csv"
+file_name = "./sales/sales.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Price", "Month", "Day", "Year"]
 

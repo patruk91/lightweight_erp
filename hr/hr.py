@@ -5,7 +5,7 @@ import data_manager
 # common module
 import common
 
-file_name = "persons.csv"
+file_name = "./hr/persons.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Name", "Birth Year"]
 update_options = ["name", "birth year"]

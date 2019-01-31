@@ -5,7 +5,7 @@ import data_manager
 # common module
 import common
 
-file_name = "items.csv"
+file_name = "./acounting/items.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Month", "Day", "Year", "Type", "Amount ($)"]
 update_options = ["month", "day", "year", "type", "amount"]

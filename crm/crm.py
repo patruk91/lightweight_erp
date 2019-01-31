@@ -5,7 +5,7 @@ import data_manager
 # common module
 import common
 
-file_name = "customers.csv"
+file_name = "./crm/customers.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Name", "Email", "Subscribed"]
 update_options = ["name", "email", "subscribed"]
