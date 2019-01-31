@@ -50,3 +50,32 @@ def handle_sort_names(longest_names):
                 longest_names[index] = temp
         x += 1
     return longest_names
+
+
+def check_if_input_is_number(handle_inputs):
+    """
+    Check if input parameter is number.
+    :param handle_inputs: parameters provided from user.
+    :return: boolean
+    """
+    if handle_inputs.isdigit() and int(handle_inputs) > 0:
+        return True
+    return False
+
+def check_if_data_is_in_range(i, handle_inputs, border_conditions):
+    """
+    Check if data provided from user is in definded border conditions.
+    :param i: iterator from loop
+    :param handle_inputs: parameters provided from user.
+    :param border_conditions: list with maximum acceptable
+    :return: boolean
+    """
+    if i != 2 and i != 3 and int(handle_inputs) <= border_conditions[i]:
+        return True
+    elif i == 2:
+        if int(handle_inputs) <= border_conditions[i]:
+            return True
+    elif i == 3:
+        if int(handle_inputs) <= border_conditions[i]:
+            return True
+    return False
