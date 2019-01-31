@@ -16,8 +16,12 @@ import ui
 import data_manager
 # common module
 import common
-table = data_manager.get_table_from_file(file_name="games.csv")
+file_name = "games.csv"
+table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Manufacturer", "Price", "In stock"]
+
+update_options = ["title", "manufacturer", "price", "in stock"]
+border_conditions = ["", 10000000, 12, 31, 3000]
 
 def start_module():
     """
@@ -64,23 +68,35 @@ def show_table(table):
         None
     """
 
-    # your code
+    ui.print_table(table, title_list)
 
 
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: text file where are included some information.
+    :return: list with a new record
     """
+    new_record = []
+    new_record.append(common.generate_random(table))
+    new_record.append(input("Enter " + update_options[0] + ": "))
+    new_record.append(input("Enter " + update_options[1] + ": "))
+    new_record.append(input("Enter " + update_options[2] + ": "))
+    i = 3
+    while i < len(update_options):
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        if common.check_if_input_is_number(handle_inputs):
+            if common.check_if_data_is_in_range(i, handle_inputs, border_conditions):
+                new_record.append(handle_inputs)
+                i += 1
+        else:
+            ui.print_error_message("Something went wrong!")
 
-    # your code
+    updated_table = table + [new_record]
+    data_manager.write_table_to_file(file_name, table=updated_table)
+    show_table(updated_table)
 
-    return table
+    return updated_table
 
 
 def remove(table, id_):
@@ -136,7 +152,7 @@ def get_counts_by_manufacturers(table):
     return dict_of_counts_by_manufacturer
 
 
-def get_average_by_manufacturer(table, manufacturer="Ensemble Studios"):
+def get_average_by_manufacturer(table, manufacturer):
     """
     Display calculated average of games amount in stock for given manufacturer
     :param table: list of all items in database
@@ -149,3 +165,6 @@ def get_average_by_manufacturer(table, manufacturer="Ensemble Studios"):
                                manufacturer_and_stock if games[0] == manufacturer]
     avg_count = [common.sum_values(list_of_amount_in_stock) / len(list_of_amount_in_stock)]
     return avg_count[0]
+
+
+start_module()
