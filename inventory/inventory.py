@@ -3,9 +3,15 @@ import ui
 import data_manager
 # common module
 import common
-table = data_manager.get_table_from_file(file_name="inventory.csv")
-title_list = ["Id", "Name of item", "Manufacturer", "Year of purchase", "Years it can be used"]
-actual_year = 2017
+
+file_name = "inventory.csv"
+table = data_manager.get_table_from_file(file_name)
+title_list = ["Id", "Title", "Price", "Month", "Day"]
+
+update_options = ["title", "price", "month", "day"]
+border_conditions = ["", 10000000, 12, 31]
+
+
 def start_module():
     """
     Menu of this file.
@@ -48,25 +54,22 @@ def add(table):
     :return: updated table
     """
     new_record = []
-    inventory_records = ["Enter name of item: ", "Enter manufacturer: ", "Enter year of purchase: ",
-                         "Enter years how can be used: "]
     new_record.append(common.generate_random(table))
-    i = 0
-    while i < 2:
-        user_input = input(inventory_records[i])
-        new_record.append(user_input)
-        i += 1
-    i = 2
-    while i < len(inventory_records):
-        integer_inputs = input(inventory_records[i])
-        if integer_inputs.isdigit():
-            new_record.append(integer_inputs)
-            i += 1
+    new_record.append(input("Enter " + update_options[0] + ": "))
+    i = 1
+    while i < len(update_options):
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        if common.check_if_input_is_number(handle_inputs):
+            if common.check_if_data_is_in_range(i, handle_inputs, border_conditions):
+                new_record.append(handle_inputs)
+                i += 1
         else:
-            ui.print_error_message("Enter numbers!")
+            print("error!")
+
     updated_table = table + [new_record]
-    data_manager.write_table_to_file(file_name="inventory.csv", table=updated_table)
-    ui.print_table(updated_table, title_list)
+    data_manager.write_table_to_file(file_name, table=updated_table)
+    show_table(updated_table)
+
     return updated_table
 
 
@@ -154,3 +157,5 @@ def get_average_durability_by_manufacturers(table):
 
     dict_avg_dur = dict(zip(list_of_manufacturer, convert_avg_dur))
     return dict_avg_dur
+
+start_module()
