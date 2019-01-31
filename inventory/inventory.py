@@ -33,8 +33,6 @@ def start_module():
         get_available_items(table)
     elif answer == "6":
         get_average_durability_by_manufacturers(table)
-    elif answer == "0":
-        sys.exit(0)
     else:
         raise KeyError("There is no such option.")
 
@@ -160,5 +158,3 @@ def get_average_durability_by_manufacturers(table):
 
     dict_avg_dur = dict(zip(list_of_manufacturer, convert_avg_dur))
     return dict_avg_dur
-
-start_module()

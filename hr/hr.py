@@ -33,8 +33,6 @@ def start_module():
         get_oldest_person(table)
     elif answer == "6":
         get_persons_closest_to_average(table)
-    elif answer == "0":
-        sys.exit(0)
     else:
         raise KeyError("There is no such option.")
 

@@ -32,8 +32,6 @@ def start_module():
         get_lowest_price_item_id(table)
     elif answer == "6":
         get_items_sold_between(table, month_from=2, day_from=12, year_from=2016, month_to=7, day_to=6, year_to=2016)
-    elif answer == "0":
-        sys.exit(0)
     else:
         raise KeyError("There is no such option.")
 

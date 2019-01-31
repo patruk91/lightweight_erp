@@ -83,71 +83,71 @@ def check_if_data_is_in_range(i, handle_inputs, border_conditions):
 
 def store_sub_menu():
     print("""
-        (0)Show table
-        (1)Add
-        (2)Remove
-        (3)Update
-        (4)Get counts by manufacturers
-        (5)Get average by manufacturers""")
+        (1)Show table
+        (2)Add
+        (3)Remove
+        (4)Update
+        (5)Get counts by manufacturers
+        (6)Get average by manufacturers""")
     answer = input("Choose number: ")
     return answer
 
 
 def hr_sub_menu():
     print("""
-        (0)Show table
-        (1)Add
-        (2)Remove
-        (3)Update
-        (4)Get oldest person
-        (5)Get persons closest to average""")
+        (1)Show table
+        (2)Add
+        (3)Remove
+        (4)Update
+        (5)Get oldest person
+        (6)Get persons closest to average""")
     answer = input("Choose number: ")
     return answer
 
 
 def inventory_sub_menu():
     print("""
-            (0)Show table
-            (1)Add
-            (2)Remove
-            (3)Update
-            (4)Get available items
-            (5)Get average durability by manufacturers""")
+            (1)Show table
+            (2)Add
+            (3)Remove
+            (4)Update
+            (5)Get available items
+            (6)Get average durability by manufacturers""")
     answer = input("Choose number: ")
     return answer
 
 
 def accounting_sub_menu():
     print("""
-                (0)Show table
-                (1)Add
-                (2)Remove
-                (3)Update
-                (4)Find the year where was highest income
-                (5)Calculate average (per item) profit in a given year""")
+            (1)Show table
+            (2)Add
+            (3)Remove
+            (4)Update
+            (5)Find the year where was highest income
+            (6)Calculate average (per item) profit in a given year""")
     answer = input("Choose number: ")
     return answer
 
 
 def sales_sub_menu():
     print("""
-        (0)Show table
-        (1)Add
-        (2)Remove
-        (3)Update
-        (4)Get lowest price item id
-        (5)Get items sold between""")
+        (1)Show table
+        (2)Add
+        (3)Remove
+        (4)Update
+        (5)Get lowest price item id
+        (6)Get items sold between""")
     answer = input("Choose number: ")
     return answer
 
 
 def crm_sub_menu():
     print("""
-        (0)Show table
-        (1)Add
-        (2)Remove
-        (3)Update
-        (4)Find id of the customer with the longest name.
-        (5)Find customers has subscribed the newsletter.""")
+        (1)Show table
+        (2)Add
+        (3)Remove
+        (4)Update
+        (5)Find id of the customer with the longest name.
+        (6)Find customers has subscribed the newsletter.""")
     answer = input("Choose number: ")
     return answer

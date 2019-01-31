@@ -5,7 +5,7 @@ import data_manager
 # common module
 import common
 
-file_name = "./acounting/items.csv"
+file_name = "items.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Month", "Day", "Year", "Type", "Amount ($)"]
 update_options = ["month", "day", "year", "type", "amount"]
@@ -32,8 +32,6 @@ def start_module():
         which_year_max(table)
     elif answer == "6":
         avg_amount(table, year)
-    elif answer == "0":
-        sys.exit(0)
     else:
         raise KeyError("There is no such option.")
 

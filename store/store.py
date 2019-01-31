@@ -49,9 +49,7 @@ def start_module():
     elif answer == "5":
         get_counts_by_manufacturers(table)
     elif answer == "6":
-        get_average_by_manufacturer(table)
-    elif answer == "0":
-        sys.exit(0)
+        get_average_by_manufacturer(table,manufacturer)
     else:
         raise KeyError("There is no such option.")
 
@@ -181,6 +179,3 @@ def get_average_by_manufacturer(table, manufacturer):
                                manufacturer_and_stock if games[0] == manufacturer]
     avg_count = [common.sum_values(list_of_amount_in_stock) / len(list_of_amount_in_stock)]
     return avg_count[0]
-
-
-start_module()
