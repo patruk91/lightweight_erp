@@ -20,7 +20,10 @@ import common
 
 file_name = "items.csv"
 table = data_manager.get_table_from_file(file_name)
-table_structure = ["Id", "Month", "Day", "Year", "Type", "Amount ($)"]
+title_list = ["Id", "Month", "Day", "Year", "Type", "Amount ($)"]
+
+update_options = ["month", "day", "year", "type", "amount"]
+border_conditions = [12, 31, 3000, "", 3000000]
 
 
 def start_module():
@@ -59,23 +62,35 @@ def show_table(table):
     Display a table from another module.
     :param table: table to display - text file where are included some information.
     """
-    ui.print_table(table, table_structure)
+    ui.print_table(table, title_list)
 
 
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: text file where are included some information.
+    :return: list with a new record
     """
+    new_record = []
+    new_record.append(common.generate_random(table))
+    i = 0
+    while i < len(update_options):
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        if i == 3:
+            new_record.append(handle_inputs)
+            i += 1
+        else:
+            if common.check_if_input_is_number(handle_inputs):
+                if common.check_if_data_is_in_range(i, handle_inputs, border_conditions):
+                    new_record.append(handle_inputs)
+                    i += 1
+            else:
+                print("error!")
+    updated_table = table + [new_record]
+    data_manager.write_table_to_file(file_name, table=updated_table)
+    show_table(updated_table)
 
-    # your code
-
-    return table
+    return updated_table
 
 
 def remove(table, id_):
@@ -149,3 +164,5 @@ def avg_amount(table, year):
     profit = (common.sum_values(income) - common.sum_values(outflow)) / len(year_by_income)
 
     return profit
+
+start_module()
