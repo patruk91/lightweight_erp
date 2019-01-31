@@ -96,18 +96,14 @@ def add(table):
 def remove(table, id_):
     """
     Remove a record with a given id from the table.
-
-    Args:
-        table (list): table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        list: Table without specified record.
+    :param table: text file where are included some information.
+    :param id_: id/key record to be removed
+    :return: list without specified record.
     """
-
-    # your code
-
-    return table
+    update_table = [records for records in table if id_ not in records]
+    data_manager.write_table_to_file(file_name, table=update_table)
+    show_table(update_table)
+    return update_table
 
 
 def update(table, id_):
