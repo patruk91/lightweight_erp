@@ -80,13 +80,10 @@ def remove(table, id_):
     :param id_: input where user enter id
     :return: list with a new record
     """
-    new_list = []
-    for records in table:
-        if id_ not in records:
-            new_list.append(records)
-        data_manager.write_table_to_file(file_name="inventory.csv", table=new_list)
-    show_table(new_list)
-    return new_list
+    update_table = [records for records in table if id_ not in records]
+    data_manager.write_table_to_file(file_name, table=update_table)
+    show_table(update_table)
+    return update_table
 
 
 def update(table, id_):
