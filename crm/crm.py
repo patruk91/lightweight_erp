@@ -64,17 +64,23 @@ def show_table(table):
 def add(table):
     """
     Asks user for input and adds it into the table.
-
-    Args:
-        table (list): table to add new record to
-
-    Returns:
-        list: Table with a new record
+    :param table: text file where are included some information.
+    :return: list with a new record
     """
+    new_record = []
+    new_record.append(common.generate_random(table))
+    i = 0
+    while i < len(update_options):
+        handle_inputs = input("Enter " + update_options[i] + ": ")
+        new_record.append(handle_inputs)
+        i += 1
 
-    # your code
 
-    return table
+    updated_table = table + [new_record]
+    data_manager.write_table_to_file(file_name, table=updated_table)
+    show_table(updated_table)
+
+    return updated_table
 
 
 def remove(table, id_):
@@ -139,3 +145,4 @@ def get_subscribed_emails(table):
     subscribed_emails = [record[2] + ";" + record[1] for record in table if int(record[3]) == 1]
     return subscribed_emails
 
+start_module()
