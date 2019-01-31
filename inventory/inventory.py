@@ -93,27 +93,34 @@ def update(table, id_):
     :param id_: input where user enter id
     :return: updated table
     """
-    updated_record = []
-    options_of_update = ["name", "manufacturer", "purchase", "years"]
-    for record in table:
-        if id_ in record:
-            updated_record.append(record)
-    show_table(updated_record)
-    user_input = input("What do you want change ?").lower()
-    ask_user = 0
-    while ask_user < 1:
-        new_data = input("Actual " + user_input + ": " +
-                         updated_record[0][options_of_update.index(user_input) + 1] + "\nEnter new: ")
-        if user_input in options_of_update:
-            updated_record[0][options_of_update.index(user_input) + 1] = new_data
-            ask_user += 1
+    searched_record = [record for record in table if id_ in record]
+    ui.print_table(searched_record, title_list)
+    searched_record = searched_record[0]  # unpack from list of lists
+    id_place = 1
+    # due to id in on the 0 position in list
+
+    i = 0
+    while i < 1:
+        user_input = input("What do you want change?").lower()
+        if user_input in update_options:
+            chosen_option = update_options.index(user_input) + id_place
+            new_data = input("Actual " + user_input + ": "
+                             + searched_record[chosen_option]
+                             + "\nEnter new: ")
+
+            if chosen_option == 1:
+                searched_record[chosen_option] = new_data
+                i += 1
+            elif common.check_if_input_is_number(new_data) and common.check_if_data_is_in_range(
+                    chosen_option - + id_place, new_data, border_conditions):
+                searched_record[chosen_option] = new_data
+                i += 1
+            else:
+                print("some kind of error, to wide range for day month year etc")
         else:
-            ui.print_error_message("No option i database to change!")
-        for record in updated_record:
-            if record[0] in table:
-                table = updated_record
-        data_manager.write_table_to_file(file_name="inventory.csv", table=table)
-        show_table(table)
+            print("Provide correct value")
+    data_manager.write_table_to_file(file_name, table=table)
+    ui.print_table([searched_record], title_list)
     return table
 
 
