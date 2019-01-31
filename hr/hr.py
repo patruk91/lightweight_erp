@@ -15,10 +15,11 @@ import data_manager
 # common module
 import common
 
-
 file_name = "persons.csv"
 table = data_manager.get_table_from_file(file_name)
-table_structure = ["Id", "Name", "Birth Year"]
+title_list = ["Id", "Name", "Birth Day"]
+update_options = ["name", "birth day"]
+border_conditions = ["", 31]
 
 
 def start_module():
@@ -31,7 +32,28 @@ def start_module():
         None
     """
 
-    # your code
+    inputs = input("Please enter a number: ")
+    option = inputs[0]
+    if option == "1":
+        show_table(table)
+    elif option == "2":
+        add(table)
+    elif option == "3":
+        show_table(table)
+        id_ = input("Enter id of record to delete: ")
+        remove(table, id_)
+    elif option == "4":
+        ui.print_table(table, title_list)
+        id_ = input("Enter id of record who you want edit: ")
+        update(table, id_)
+    elif option == "5":
+        get_oldest_person(table)
+    elif option == "6":
+        get_persons_closest_to_average(table)
+    elif option == "0":
+        sys.exit(0)
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(table):
