@@ -19,20 +19,38 @@ import common
 
 file_name = "customers.csv"
 table = data_manager.get_table_from_file(file_name)
-table_structure = ["Id", "Name", "Email", "Subscribed"]
+title_list = ["Id", "Name", "Email", "Subscribed"]
+
+update_options = ["name", "email", "subscribed"]
+border_conditions = ["", "", "", ""]
 
 
 def start_module():
     """
-    Starts this module and displays its menu.
-     * User can access default special features from here.
-     * User can go back to main menu from here.
-
-    Returns:
-        None
+    Menu of this file.
     """
-
-    # your code
+    inputs = input("Please enter a number: ")
+    option = inputs[0]
+    if option == "1":
+        show_table(table)
+    elif option == "2":
+        add(table)
+    elif option == "3":
+        show_table(table)
+        id_ = input("Enter id of record to delete: ")
+        remove(table, id_)
+    elif option == "4":
+        ui.print_table(table, title_list)
+        id_ = input("Enter id of record who you want edit: ")
+        update(table, id_)
+    elif option == "5":
+        get_longest_name_id(table)
+    elif option == "6":
+        get_subscribed_emails(table)
+    elif option == "0":
+        sys.exit(0)
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(table):
@@ -40,7 +58,7 @@ def show_table(table):
     Display a table from another module.
     :param table: table to display - text file where are included some information.
     """
-    ui.print_table(table, table_structure)
+    ui.print_table(table, title_list)
 
 
 def add(table):
