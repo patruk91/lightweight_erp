@@ -1,14 +1,3 @@
-""" Customer Relationship Management (CRM) module
-
-Data table structure:
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * name (string)
-    * email (string)
-    * subscribed (int): Is she/he subscribed to the newsletter? 1/0 = yes/no
-"""
-
-# everything you'll need is imported:
 # User interface module
 import ui
 # data manager module
@@ -16,13 +5,11 @@ import data_manager
 # common module
 import common
 
-
 file_name = "customers.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Name", "Email", "Subscribed"]
-
 update_options = ["name", "email", "subscribed"]
-border_conditions = ["", "", "", ""]
+border_conditions = ["", "", 1]
 
 
 def start_module():
@@ -96,17 +83,29 @@ def remove(table, id_):
 def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table (list): list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        list: table with updated record
+    :param table: text file where are included some information.
+    :param id_: id of a record to update
+    :return: list of list with updated record
     """
-
-    # your code
-
+    searched_record = [record for record in table if id_ in record]
+    ui.print_table(searched_record, title_list)
+    searched_record = searched_record[0]  # unpack from list of lists
+    id_place = 1
+    # due to id in on the 0 position in list
+    i = 0
+    while i < 1:
+        user_input = input("What do you want change?").lower()
+        if user_input in update_options:
+            chosen_option = update_options.index(user_input) + id_place
+            new_data = input("Actual " + user_input + ": "
+                             + searched_record[chosen_option]
+                             + "\nEnter new: ")
+            searched_record[chosen_option] = new_data
+            i += 1
+        else:
+            print("Provide correct value")
+    data_manager.write_table_to_file(file_name, table=table)
+    ui.print_table([searched_record], title_list)
     return table
 
 
@@ -127,8 +126,6 @@ def get_longest_name_id(table):
     return table[get_index_name][0]
 
 
-# the question: Which customers has subscribed to the newsletter?
-# return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """
     Find customers has subscribed the newsletter.
@@ -137,5 +134,3 @@ def get_subscribed_emails(table):
     """
     subscribed_emails = [record[2] + ";" + record[1] for record in table if int(record[3]) == 1]
     return subscribed_emails
-
-start_module()
