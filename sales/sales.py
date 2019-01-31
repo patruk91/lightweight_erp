@@ -31,7 +31,10 @@ def start_module():
     elif answer == "5":
         get_lowest_price_item_id(table)
     elif answer == "6":
-        get_items_sold_between(table, month_from=2, day_from=12, year_from=2016, month_to=7, day_to=6, year_to=2016)
+        from_data = get_data('Start date')
+        to_data = get_data('End data')
+        get_items_sold_between(table, month_from=from_data[1], day_from=from_data[2],\
+                               year_from=from_data[0], month_to=to_data[1], day_to=to_data[2], year_to=to_data[0])
     else:
         raise KeyError("There is no such option.")
 
@@ -136,17 +139,95 @@ def get_lowest_price_item_id(table):
 
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
     """
-    Question: Which items are sold between two given dates? (from_date < sale_date < to_date)
-
-    Args:
-        table (list): data table to work on
-        month_from (int)
-        day_from (int)
-        year_from (int)
-        month_to (int)
-        day_to (int)
-        year_to (int)
-
-    Returns:
-        list: list of lists (the filtered table)
+    Display items are sold between two given dates
+    :param table: list of all items in database
+    :param month_from: month given by user to define start range of search
+    :param day_from: day given by user to define start range of search
+    :param year_from: year given by user to define start range of search
+    :param month_to: month given by user to define end range of search
+    :param day_to: day given by user to define end range of search
+    :param year_to: year given by user to define end range of search
+    :return: list of records who fulfills given range of date
     """
+    YEAR_I = 5
+    MONTH_I = 3
+    DAY_I = 4
+    from_date = join_to_digit(year_from, month_from, day_from)
+    to_date = join_to_digit(year_to, month_to, day_to)
+    result = []
+    for entry in table:
+        entry_data = join_to_digit(entry[YEAR_I], entry[MONTH_I], entry[DAY_I])
+        if from_date < entry_data < to_date:
+            result.append(entry)
+    if len(result) > 0:
+        show_table(result)
+    else:
+        ui.print_error_message("No records in this range!")
+
+    return result
+
+
+def join_to_digit(year, month, day):
+    """
+    Tomorrow will be docstring....
+    :param year:
+    :param month:
+    :param day:
+    :return:
+    """
+    date = []
+    date.append(str(year))
+
+    if len(str(month)) < 2:
+        month = '0' + str(month)
+        date.append(month)
+    else:
+        date.append(str(month))
+
+    if len(str(day)) < 2:
+        day = '0' + str(day)
+        date.append(day)
+    else:
+        date.append(str(day))
+
+    return int(''.join(date))
+
+
+def validate_digit(input, start_range, end_range, error_type):
+    digit = int(input)
+    if digit < start_range or digit > end_range:
+        raise error_type
+
+
+def get_data(title):
+    ui.print_error_message(title)
+    data = []
+    for i in range(3):
+        while True:
+            try:
+                if i == 0:
+                    year = ui.get_inputs([''], 'Enter year: ')[0]
+                    validate_digit(year, 0, 2019, ConnectionError)
+                    data.append(year)
+                    break
+                elif i == 1:
+                    month = ui.get_inputs([''], 'Enter month: ')[0]
+                    validate_digit(month, 1, 12, PermissionError)
+                    data.append(month)
+                    break
+                elif i == 2:
+                    day = ui.get_inputs([''], 'Enter day: ')[0]
+                    validate_digit(day, 1, 31, ProcessLookupError)
+                    data.append(day)
+                    break
+            except (ValueError, TypeError):
+                ui.print_error_message('It need to be a digit.')
+            except ConnectionError:
+                ui.print_error_message('Year must be between 0 and 2019.')
+            except PermissionError:
+                ui.print_error_message('Month must be between 1 and 12.')
+            except ProcessLookupError:
+                ui.print_error_message('Day must be between 1 and 31.')
+
+    return data
+
