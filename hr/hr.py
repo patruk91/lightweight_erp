@@ -1,13 +1,3 @@
-""" Human resources module
-
-Data table structure:
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * name (string)
-    * birth_year (number)
-"""
-
-# everything you'll need is imported:
 # User interface module
 import ui
 # data manager module
@@ -24,14 +14,8 @@ border_conditions = ["", 3000]
 
 def start_module():
     """
-    Starts this module and displays its menu.
-     * User can access default special features from here.
-     * User can go back to main menu from here.
-
-    Returns:
-        None
+    Menu of this file.
     """
-
     inputs = input("Please enter a number: ")
     option = inputs[0]
     if option == "1":
@@ -106,22 +90,40 @@ def remove(table, id_):
 def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table (list): list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        list: table with updated record
+    :param table: text file where are included some information.
+    :param id_: id of a record to update
+    :return: list of list with updated record
     """
+    searched_record = [record for record in table if id_ in record]
+    ui.print_table(searched_record, title_list)
+    searched_record = searched_record[0]  # unpack from list of lists
+    id_place = 1
+    # due to id in on the 0 position in list
 
-    # your code
+    i = 0
+    while i < 1:
+        user_input = input("What do you want change?").lower()
+        if user_input in update_options:
+            chosen_option = update_options.index(user_input) + id_place
+            new_data = input("Actual " + user_input + ": "
+                             + searched_record[chosen_option]
+                             + "\nEnter new: ")
 
+            if chosen_option == 1:
+                searched_record[chosen_option] = new_data
+                i += 1
+            elif common.check_if_input_is_number(new_data) and common.check_if_data_is_in_range(
+                    chosen_option - + id_place, new_data, border_conditions):
+                searched_record[chosen_option] = new_data
+                i += 1
+            else:
+                print("some kind of error, to wide range for day month year etc")
+        else:
+            print("Provide correct value")
+    data_manager.write_table_to_file(file_name, table=table)
+    ui.print_table([searched_record], title_list)
     return table
 
-
-# special functions:
-# ------------------
 
 def get_oldest_person(table):
     """
@@ -129,7 +131,6 @@ def get_oldest_person(table):
     :param table: list of lists with data form hr department
     :return: list with oldest persons name
     """
-
     oldest_year = min([record[2] for record in table])
     oldest_names = [name[1] for name in table if name[2] == oldest_year]
     return oldest_names
@@ -144,7 +145,5 @@ def get_persons_closest_to_average(table):
     years = [int(year[2]) for year in table]
     years_avg = common.sum_values(years) / len(years)
     similar_years = min(years, key=lambda x: abs(x - years_avg))
-
     closest_person = [record[1] for record in table if int(record[2]) == similar_years]
     return closest_person
-start_module()
