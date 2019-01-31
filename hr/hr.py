@@ -16,25 +16,24 @@ def start_module():
     """
     Menu of this file.
     """
-    inputs = input("Please enter a number: ")
-    option = inputs[0]
-    if option == "1":
+    answer = common.hr_sub_menu()
+    if answer == "1":
         show_table(table)
-    elif option == "2":
+    elif answer == "2":
         add(table)
-    elif option == "3":
+    elif answer == "3":
         show_table(table)
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
-    elif option == "4":
+    elif answer == "4":
         ui.print_table(table, title_list)
         id_ = input("Enter id of record who you want edit: ")
         update(table, id_)
-    elif option == "5":
+    elif answer == "5":
         get_oldest_person(table)
-    elif option == "6":
+    elif answer == "6":
         get_persons_closest_to_average(table)
-    elif option == "0":
+    elif answer == "0":
         sys.exit(0)
     else:
         raise KeyError("There is no such option.")
