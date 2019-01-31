@@ -1,16 +1,3 @@
-""" Sales module
-
-Data table structure:
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * title (string): Title of the game sold
-    * price (number): The actual sale price in USD
-    * month (number): Month of the sale
-    * day (number): Day of the sale
-    * year (number): Year of the sale
-"""
-
-# everything you'll need is imported:
 # User interface module
 import ui
 # data manager module
@@ -18,29 +5,24 @@ import data_manager
 # common module
 import common
 
-file_name="sales.csv"
+file_name = "sales.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Price", "Month", "Day", "Year"]
 
 update_options = ["title", "price", "month", "day", "year"]
 border_conditions = ["", 10000000, 12, 31, 3000]
 
-def start_module():
-    """
-    Starts this module and displays its menu.
-     * User can access default special features from here.
-     * User can go back to main menu from here.
 
-    Returns:
-        None
-    """
-    inputs = input(["Please enter a number: "])
+def start_module():
+
+    inputs = input("Please enter a number: ")
     option = inputs[0]
     if option == "1":
         show_table(table)
     elif option == "2":
         add(table)
     elif option == "3":
+        show_table(table)
         id_ = input("Enter id of record to delete: ")
         remove(table, id_)
     elif option == "4":
@@ -65,36 +47,6 @@ def show_table(table):
     ui.print_table(table, title_list)
 
 
-def check_if_input_is_number(handle_inputs):
-    """
-    Check if input parameter is number.
-    :param handle_inputs: parameters provided from user.
-    :return: boolean
-    """
-    if handle_inputs.isdigit() and int(handle_inputs) > 0:
-        return True
-    return False
-
-
-def check_if_data_is_in_range(i, handle_inputs, border_conditions):
-    """
-    Check if data provided from user is in definded border conditions.
-    :param i: iterator from loop
-    :param handle_inputs: parameters provided from user.
-    :param border_conditions: list with maximum acceptable
-    :return: boolean
-    """
-    if i != 2 and i != 3 and int(handle_inputs) <= border_conditions[i]:
-        return True
-    elif i == 2:
-        if int(handle_inputs) <= border_conditions[i]:
-            return True
-    elif i == 3:
-        if int(handle_inputs) <= border_conditions[i]:
-            return True
-    return False
-
-
 def add(table):
     """
     Asks user for input and adds it into the table.
@@ -102,22 +54,20 @@ def add(table):
     :return: list with a new record
     """
     new_record = []
-
     new_record.append(common.generate_random(table))
     new_record.append(input("Enter " + update_options[0] + ": "))
-
     i = 1
     while i < len(update_options):
         handle_inputs = input("Enter " + update_options[i] + ": ")
-        if check_if_input_is_number(handle_inputs):
-            if check_if_data_is_in_range(i, handle_inputs, border_conditions):
+        if common.check_if_input_is_number(handle_inputs):
+            if common.check_if_data_is_in_range(i, handle_inputs, border_conditions):
                 new_record.append(handle_inputs)
                 i += 1
         else:
             print("error!")
 
     updated_table = table + [new_record]
-    data_manager.write_table_to_file(file_name="sales.csv", table=updated_table)
+    data_manager.write_table_to_file(file_name, table=updated_table)
     show_table(updated_table)
 
     return updated_table
@@ -161,7 +111,7 @@ def update(table, id_):
             if chosen_option == 1:
                 searched_record[chosen_option] = new_data
                 i += 1
-            elif check_if_input_is_number(new_data) and check_if_data_is_in_range(
+            elif common.check_if_input_is_number(new_data) and common.check_if_data_is_in_range(
                     chosen_option - + id_place, new_data, border_conditions):
                 searched_record[chosen_option] = new_data
                 i += 1
@@ -176,14 +126,9 @@ def update(table, id_):
 
 def get_lowest_price_item_id(table):
     """
-    Question: What is the id of the item that was sold for the lowest price?
-    if there are more than one item at the lowest price, return the last item by alphabetical order of the title
-
-    Args:
-        table (list): data table to work on
-
-    Returns:
-         string: id
+    Display lowest price in database by given id
+    :param table: list of all items in database
+    :return: title of item with lowest price
     """
     price = min([int(price[2]) for price in table])
     title_with_min_price = [record[1] for record in table if int(record[2]) == price]
@@ -208,5 +153,3 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     Returns:
         list: list of lists (the filtered table)
     """
-
-start_module()
