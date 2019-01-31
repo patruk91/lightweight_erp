@@ -7,7 +7,7 @@ import common
 file_name = "inventory.csv"
 table = data_manager.get_table_from_file(file_name)
 title_list = ["Id", "Title", "Price", "Month", "Day"]
-
+actual_year = 2019
 update_options = ["title", "price", "month", "day"]
 border_conditions = ["", 10000000, 12, 31]
 
