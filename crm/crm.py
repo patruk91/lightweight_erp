@@ -100,7 +100,7 @@ def update(table, id_):
             searched_record[chosen_option] = new_data
             i += 1
         else:
-            print("Provide correct value")
+            ui.print_error_message("Provide correct value")
     data_manager.write_table_to_file(file_name, table=table)
     ui.print_table([searched_record], title_list)
     return table

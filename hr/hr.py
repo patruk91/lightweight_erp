@@ -62,7 +62,7 @@ def add(table):
                 new_record.append(handle_inputs)
                 i += 1
         else:
-            print("error!")
+            ui.print_error_message("error!")
 
     updated_table = table + [new_record]
     data_manager.write_table_to_file(file_name, table=updated_table)
@@ -114,9 +114,9 @@ def update(table, id_):
                 searched_record[chosen_option] = new_data
                 i += 1
             else:
-                print("some kind of error, to wide range for day month year etc")
+                ui.print_error_message("some kind of error, to wide range for day month year etc")
         else:
-            print("Provide correct value")
+            ui.print_error_message("Provide correct value")
     data_manager.write_table_to_file(file_name, table=table)
     ui.print_table([searched_record], title_list)
     return table

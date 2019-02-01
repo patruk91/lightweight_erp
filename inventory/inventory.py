@@ -61,7 +61,7 @@ def add(table):
                 new_record.append(handle_inputs)
                 i += 1
         else:
-            print("error!")
+            ui.print_error_message("error!")
 
     updated_table = table + [new_record]
     data_manager.write_table_to_file(file_name, table=updated_table)
@@ -113,9 +113,9 @@ def update(table, id_):
                 searched_record[chosen_option] = new_data
                 i += 1
             else:
-                print("some kind of error, to wide range for day month year etc")
+                ui.print_error_message("some kind of error, to wide range for day month year etc")
         else:
-            print("Provide correct value")
+            ui.print_error_message("Provide correct value")
     data_manager.write_table_to_file(file_name, table=table)
     ui.print_table([searched_record], title_list)
     return table
@@ -129,7 +129,10 @@ def get_available_items(table):
     """
     actual_durability = [record for record in table if
                          int(record[3]) + int(record[4]) >= actual_year]
-    show_table(actual_durability)
+    if len(actual_durability) > 0:
+        show_table(actual_durability)
+    else:
+        ui.print_error_message("No data to print!")
     return actual_durability
 
 

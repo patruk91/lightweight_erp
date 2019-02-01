@@ -140,7 +140,7 @@ def which_year_max(table):
 
     year_max = table[year_index[0]][3]
     show_table([table[year_index[0]]])
-    return year_max
+    return int(year_max)
 
 
 def avg_amount(table, year):
